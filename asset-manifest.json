@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/rv-classroom/static/css/main.f6cffc85.chunk.css",
+    "main.js": "/rv-classroom/static/js/main.085b32e1.chunk.js",
+    "main.js.map": "/rv-classroom/static/js/main.085b32e1.chunk.js.map",
+    "runtime-main.js": "/rv-classroom/static/js/runtime-main.b2b607e3.js",
+    "runtime-main.js.map": "/rv-classroom/static/js/runtime-main.b2b607e3.js.map",
+    "static/js/2.45e8e3ee.chunk.js": "/rv-classroom/static/js/2.45e8e3ee.chunk.js",
+    "static/js/2.45e8e3ee.chunk.js.map": "/rv-classroom/static/js/2.45e8e3ee.chunk.js.map",
+    "index.html": "/rv-classroom/index.html",
+    "precache-manifest.9ef36da863848aeba6b2661190aa3f9f.js": "/rv-classroom/precache-manifest.9ef36da863848aeba6b2661190aa3f9f.js",
+    "service-worker.js": "/rv-classroom/service-worker.js",
+    "static/css/main.f6cffc85.chunk.css.map": "/rv-classroom/static/css/main.f6cffc85.chunk.css.map",
+    "static/js/2.45e8e3ee.chunk.js.LICENSE.txt": "/rv-classroom/static/js/2.45e8e3ee.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b2b607e3.js",
+    "static/js/2.45e8e3ee.chunk.js",
+    "static/css/main.f6cffc85.chunk.css",
+    "static/js/main.085b32e1.chunk.js"
+  ]
+}
