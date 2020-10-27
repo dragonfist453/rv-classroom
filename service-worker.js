@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/rv-classroom/precache-manifest.9ef36da863848aeba6b2661190aa3f9f.js"
+  "/rv-classroom/precache-manifest.1110164a8194db6aa62062a42700c5de.js"
 );
 
 self.addEventListener('message', (event) => {
