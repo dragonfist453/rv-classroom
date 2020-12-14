@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/rv-classroom/static/css/main.f6cffc85.chunk.css",
-    "main.js": "/rv-classroom/static/js/main.4ad5fd2b.chunk.js",
-    "main.js.map": "/rv-classroom/static/js/main.4ad5fd2b.chunk.js.map",
+    "main.js": "/rv-classroom/static/js/main.ef8009ed.chunk.js",
+    "main.js.map": "/rv-classroom/static/js/main.ef8009ed.chunk.js.map",
     "runtime-main.js": "/rv-classroom/static/js/runtime-main.b2b607e3.js",
     "runtime-main.js.map": "/rv-classroom/static/js/runtime-main.b2b607e3.js.map",
-    "static/js/2.d093b505.chunk.js": "/rv-classroom/static/js/2.d093b505.chunk.js",
-    "static/js/2.d093b505.chunk.js.map": "/rv-classroom/static/js/2.d093b505.chunk.js.map",
+    "static/js/2.e041d1df.chunk.js": "/rv-classroom/static/js/2.e041d1df.chunk.js",
+    "static/js/2.e041d1df.chunk.js.map": "/rv-classroom/static/js/2.e041d1df.chunk.js.map",
     "index.html": "/rv-classroom/index.html",
-    "precache-manifest.1798c1546e0b287a66da17342eda5028.js": "/rv-classroom/precache-manifest.1798c1546e0b287a66da17342eda5028.js",
+    "precache-manifest.167d462d2b7b1324c6367dcceea25449.js": "/rv-classroom/precache-manifest.167d462d2b7b1324c6367dcceea25449.js",
     "service-worker.js": "/rv-classroom/service-worker.js",
     "static/css/main.f6cffc85.chunk.css.map": "/rv-classroom/static/css/main.f6cffc85.chunk.css.map",
-    "static/js/2.d093b505.chunk.js.LICENSE.txt": "/rv-classroom/static/js/2.d093b505.chunk.js.LICENSE.txt"
+    "static/js/2.e041d1df.chunk.js.LICENSE.txt": "/rv-classroom/static/js/2.e041d1df.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.b2b607e3.js",
-    "static/js/2.d093b505.chunk.js",
+    "static/js/2.e041d1df.chunk.js",
     "static/css/main.f6cffc85.chunk.css",
-    "static/js/main.4ad5fd2b.chunk.js"
+    "static/js/main.ef8009ed.chunk.js"
   ]
 }
