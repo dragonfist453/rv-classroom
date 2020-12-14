@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
 import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import { Route } from 'react-router-dom';
+import { Route, } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import UserPage from './pages/UserPage';
 import AdminLandingPage from './pages/AdminLandingPage';
+import ClassPage from './pages/ClassPage';
 import AppBarWidget from './components/AppBarWidget';
 
 const theme = createMuiTheme({
@@ -41,6 +42,7 @@ function App() {
           <AppBarWidget/>
           <UserPage/>
         </Route>
+        <Route path='/class/:cid' component={ClassPage}/>
       </ThemeProvider>
     </React.Fragment>
   );

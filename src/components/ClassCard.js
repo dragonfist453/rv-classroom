@@ -1,6 +1,7 @@
 import React from 'react';
 import {Card, CardContent, Typography, } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,8 +16,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ClassCard(props) {
     const classes = useStyles();
+    let history = useHistory();
     return(
-        <Card variant="outlined" className={classes.root}>
+        <Card variant="outlined" className={classes.root} onDoubleClick={() => history.push('/class/'+props.class.cid)}>
             <CardContent>
                 <Typography variant='h5' noWrap>
                     {props.class.name}

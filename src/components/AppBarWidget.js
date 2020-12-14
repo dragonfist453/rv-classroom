@@ -2,6 +2,7 @@ import React from 'react';
 import {AppBar, Toolbar, Typography, useScrollTrigger, IconButton} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import {Menu} from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     appbar: theme.appbar,
@@ -22,6 +23,7 @@ function ElevationScroll(props) {
 
 export default function AppBarWidget(props) {
     const classes = useStyles();
+    let loggedIn = localStorage.getItem('isAuthenticated') === 'true';
     return(
         <React.Fragment>
             <ElevationScroll {...props}>
@@ -31,8 +33,12 @@ export default function AppBarWidget(props) {
                         <IconButton>
                             <Menu/>
                         </IconButton>
-                        <img src={process.env.PUBLIC_URL + '/rvce.png'} alt='RVCE logo' height="50px"/>
-                        <Typography variant="h6"> Classroom</Typography>
+                        <Link to={loggedIn?'/user':'/'} style={{display: 'contents', textDecoration: 'none', color: 'black'}}>
+                            <div style={{display: 'contents'}}>
+                                <img src={process.env.PUBLIC_URL + '/rvce.png'} alt='RVCE logo' height="50px"/>
+                                <Typography variant="h6"> Classroom</Typography>
+                            </div>
+                        </Link>
                     </Toolbar>
                 </AppBar>
             </ElevationScroll>
