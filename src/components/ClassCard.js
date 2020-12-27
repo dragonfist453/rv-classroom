@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, CardContent, Typography, } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
-import {useHistory} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -12,6 +12,13 @@ const useStyles = makeStyles((theme) => ({
             cursor: 'pointer',
         }
     },
+    link: {
+        color: '#111',
+        textDecoration: 'none',
+        '&:hover': {
+            textDecoration: 'underline',
+        }
+    }
 }))
 
 export default function ClassCard(props) {
@@ -20,9 +27,11 @@ export default function ClassCard(props) {
     return(
         <Card variant="outlined" className={classes.root} onDoubleClick={() => history.push('/class/'+props.class.cid)}>
             <CardContent>
-                <Typography variant='h5' noWrap>
-                    {props.class.name}
-                </Typography>
+                <Link to={'/class/'+props.class.cid} className={classes.link}>
+                    <Typography variant='h5' noWrap>
+                        {props.class.name}
+                    </Typography>
+                </Link>
                 <Typography variant='p'>
                     {props.class.section}
                 </Typography>

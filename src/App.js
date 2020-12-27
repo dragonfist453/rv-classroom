@@ -6,6 +6,7 @@ import LandingPage from './pages/LandingPage';
 import UserPage from './pages/UserPage';
 import AdminLandingPage from './pages/AdminLandingPage';
 import ClassPage from './pages/ClassPage';
+import CalendarPage from './pages/CalendarPage';
 import AppBarWidget from './components/AppBarWidget';
 
 const theme = createMuiTheme({
@@ -43,6 +44,9 @@ function App() {
           <UserPage/>
         </Route>
         <Route path='/class/:cid' component={ClassPage}/>
+        <Route path='/calendar'>
+          <CalendarPage/>
+        </Route>
       </ThemeProvider>
     </React.Fragment>
   );
