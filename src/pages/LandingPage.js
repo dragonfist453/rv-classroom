@@ -83,15 +83,19 @@ export default function LandingPage() {
     setBackdrop(true)
     if(values.emailidValid && values.passwordValid){
         try{
-            const res = await axios.post(hostname + "/api/" + (values.user), {
-                uid: values.emailid,
-                pwd: values.password
+            const res = await axios.post(hostname + "/" + (values.user) + '/login', (values.user === 'student')?{
+                emailid: values.emailid,
+                studentpass: values.password
+            }:
+            {
+                emailid: values.emailid,
+                pass: values.password
             })
             if(res.data.ok === true && res.data.auth === true) {
-                localStorage.setItem('atoken', res.data.atoken)
+                localStorage.setItem('atoken', res.data.token)
                 localStorage.setItem('isAuthenticated', true)
                 localStorage.setItem('user', values.user)
-                window.location.replace(window.location.origin)
+                window.location.replace(window.location.origin + '/#/user')
             }
             else {
                 setValues({...values, authFail: true})

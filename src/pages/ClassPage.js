@@ -61,7 +61,8 @@ export default function ClassPage(props) {
                                             <Typography variant='h5'>
                                                 {disp.name}
                                             </Typography>
-                                            {/*Add material access logic here*/}
+                                            <br/>
+                                            <a href='/NPS_T2_Q1.pdf' target='_blank' download>NPS_T2_Q1</a>
                                         </Paper>
                                     )
                                 }

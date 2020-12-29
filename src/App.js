@@ -7,6 +7,7 @@ import UserPage from './pages/UserPage';
 import AdminLandingPage from './pages/AdminLandingPage';
 import ClassPage from './pages/ClassPage';
 import CalendarPage from './pages/CalendarPage';
+import ManagerPage from './pages/ManagerPage';
 import AppBarWidget from './components/AppBarWidget';
 
 const theme = createMuiTheme({
@@ -38,6 +39,9 @@ function App() {
         </Route>
         <Route exact path='/admin'>
           <AdminLandingPage/>
+        </Route>
+        <Route path='/admin/manage'>
+          <ManagerPage/>
         </Route>
         <Route path='/user'>
           <AppBarWidget/>

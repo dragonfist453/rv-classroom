@@ -82,14 +82,15 @@ export default function LandingPage() {
     setBackdrop(true)
     if(values.usernameValid && values.passwordValid){
         try{
-            const res = await axios.post(hostname + "/api/admin", {
-                uid: values.username,
-                pwd: values.password
+            const res = await axios.post(hostname + "/auth/admin/login", {
+                adminuser: values.username,
+                adminpass: values.password
             })
             if(res.data.ok === true && res.data.auth === true) {
-                localStorage.setItem('atoken', res.data.atoken)
-                localStorage.setItem('isAuthenticated', true)
-                window.location.replace(window.location.origin)
+                localStorage.setItem('admintoken', res.data.token)
+                localStorage.setItem('adminuser', values.username)
+                localStorage.setItem('isAdminAuthenticated', true)
+                window.location.replace(window.location.origin + '/#/admin/manage')
             }
             else {
                 setValues({...values, authFail: true})
