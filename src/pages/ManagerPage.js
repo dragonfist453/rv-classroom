@@ -5,7 +5,7 @@ import {Tabs,AppBar, Tab, Container, Typography, Paper, Toolbar, IconButton, Men
     DialogActions,
     TextField} from '@material-ui/core';
 import {AccountCircle, Add, } from '@material-ui/icons';
-import {AddStudent, AddTeacher, ManageEvents, ManageStudents, ManageTeachers} from '../components/ManagerComponents';
+import {AddStudent, AddTeacher, ManageSections, ManageStudents, ManageTeachers, ManageSubjects, AddSubject, AddSection} from '../components/ManagerComponents';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import {hostname} from '../links';
@@ -67,10 +67,16 @@ export default function ManagerPage(props) {
     const [loaded, setLoaded] = React.useState(false);
     
     // Tab value
-    const [value, setValue] = React.useState(0);
+    const tabhistory = Number(localStorage.getItem('tabhistory'));
+    const [value, setValue] = React.useState(tabhistory!== undefined?tabhistory:0);
     const handleChange = (event, newValue) => {
+        localStorage.setItem('tabhistory', newValue);
         setValue(newValue);
     };
+
+    React.useState(() => {
+        setValue(tabhistory)
+    },[tabhistory])
 
     // Values from forms
     const [values, setValues] = React.useState({})
@@ -125,7 +131,8 @@ export default function ManagerPage(props) {
             window.location.replace(window.location.origin + '/#/admin')
         })
     },[])
-    const profileSubmit = () => {
+    const profileSubmit = (event) => {
+        event.profileSubmit()
         axios.put(hostname + '/auth/department', department, {
             headers: {
                 "x-auth-token": localStorage.getItem('admintoken')
@@ -144,11 +151,13 @@ export default function ManagerPage(props) {
     const tabs = {
         0: <ManageStudents deptid={department.deptid}/>,
         1: <ManageTeachers deptid={department.deptid}/>,
-        2: <ManageEvents deptid={department.deptid}/>,
+        2: <ManageSections deptid={department.deptid}/>,
+        3: <ManageSubjects deptid={department.deptid}/>
     }
 
     // Add functions
-    const addStudent = () => {
+    const addStudent = (event) => {
+        event.preventDefault()
         axios.post(hostname + '/auth/admin/student/', values, {
             headers: {
                 'Content-Type': 'application/json',
@@ -162,7 +171,8 @@ export default function ManagerPage(props) {
             console.error(err)
         })
     }
-    const addTeacher = () => {
+    const addTeacher = (event) => {
+        event.preventDefault()
         axios.post(hostname + '/auth/admin/teacher/', values, {
             headers: {
                 'Content-Type': 'application/json',
@@ -176,8 +186,35 @@ export default function ManagerPage(props) {
             console.error(err)
         })
     }
-    const addEvent = () => {
-        console.log("add event clicked")
+    const addSection = (event) => {
+        event.preventDefault()
+        axios.post(hostname + '/auth/admin/timetable/', values, {
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': localStorage.getItem('admintoken')
+            }
+        })
+        .then(() => {
+            window.location.reload()
+        })
+        .catch(err => {
+            console.error(err)
+        })
+    }
+    const addSubject = (event) => {
+        event.preventDefault()
+        axios.post(hostname + '/auth/admin/classroom', values, {
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': localStorage.getItem('admintoken')
+            }
+        })
+        .then(()=> {
+            window.location.reload()
+        })
+        .catch(err => {
+            console.error(err)
+        })
     }
 
     // Fab for each tab
@@ -191,8 +228,12 @@ export default function ManagerPage(props) {
             color: 'secondary'
         },
         {
-            label: 'Add Events',
+            label: 'Add Sections',
             color: 'primary'
+        },
+        {
+            label: 'Add Subjects',
+            color: 'secondary'
         },
     ]
 
@@ -216,7 +257,8 @@ export default function ManagerPage(props) {
     const forms = [
         <AddStudent handleFormChange={handleFormChange} deptid={department.deptid}/>,
         <AddTeacher handleFormChange={handleFormChange} deptid={department.deptid}/>,
-        <React.Fragment/>
+        <AddSection handleFormChange={handleFormChange} deptid={department.deptid}/>,
+        <AddSubject handleFormChange={handleFormChange}/>
     ]
 
     // Profile dialog stuff
@@ -278,51 +320,55 @@ export default function ManagerPage(props) {
                             }
                         </Container>
                         <Dialog open={openDialog} onClose={handleCloseDialog} TransitionComponent={Transition}>
-                            <DialogTitle>{['Add Students', 'Add Teachers', 'Add Events'][value]}</DialogTitle>
-                            <DialogContent>
-                                {
-                                    forms[value]
-                                }
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleCloseDialog} color="primary">
-                                    Cancel
-                                </Button>
-                                <Button onClick={[addStudent, addTeacher, addEvent][value]} color="primary">
-                                    Submit
-                                </Button>
-                            </DialogActions>
+                            <DialogTitle>{['Add Students', 'Add Teachers', 'Add Sections', 'Add Subjects'][value]}</DialogTitle>
+                            <form onSubmit={[addStudent, addTeacher, addSection, addSubject][value]}>
+                                <DialogContent>
+                                    {
+                                        forms[value]
+                                    }
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleCloseDialog} color="primary">
+                                        Cancel
+                                    </Button>
+                                    <Button type="submit" color="primary">
+                                        Submit
+                                    </Button>
+                                </DialogActions>
+                            </form>
                         </Dialog>
                         <Dialog open={openProfileDialog} onClose={handleCloseProfileDialog} TransitionComponent={Transition}>
                             <DialogTitle>Department profile</DialogTitle>
-                            <DialogContent>
-                                <div className={classes.fields}>
-                                    <TextField
-                                        id="deptname"
-                                        label="Department name"
-                                        type="text"
-                                        value={department.deptname}
-                                        onChange={handleDepartmentChange('deptname')}
-                                    />
-                                </div>
-                                <div className={classes.fields}>
-                                    <TextField
-                                        id="adminuser"
-                                        label="Admin user name"
-                                        type="text"
-                                        value={department.adminuser}
-                                        onChange={handleDepartmentChange('adminuser')}
-                                    />
-                                </div>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleCloseProfileDialog} color="primary">
-                                    Cancel
-                                </Button>
-                                <Button onClick={profileSubmit} color="primary">
-                                    Submit
-                                </Button>
-                            </DialogActions>
+                            <form onSubmit={profileSubmit}>
+                                <DialogContent>
+                                    <div className={classes.fields}>
+                                        <TextField
+                                            id="deptname"
+                                            label="Department name"
+                                            type="text"
+                                            value={department.deptname}
+                                            onChange={handleDepartmentChange('deptname')}
+                                        />
+                                    </div>
+                                    <div className={classes.fields}>
+                                        <TextField
+                                            id="adminuser"
+                                            label="Admin user name"
+                                            type="text"
+                                            value={department.adminuser}
+                                            onChange={handleDepartmentChange('adminuser')}
+                                        />
+                                    </div>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleCloseProfileDialog} color="primary">
+                                        Cancel
+                                    </Button>
+                                    <Button type="submit" color="primary">
+                                        Submit
+                                    </Button>
+                                </DialogActions>
+                            </form>
                         </Dialog>
                         {
                             fabs.map((fab, index) => (
@@ -354,7 +400,8 @@ export default function ManagerPage(props) {
                                 >
                                     <Tab label="Manage Students" />
                                     <Tab label="Manage Teachers" />
-                                    <Tab label="Manage Events" />
+                                    <Tab label="Manage Sections &amp; Events" />
+                                    <Tab label="Manage Subjects" />
                                 </Tabs>
                             </Paper>
                         </footer>

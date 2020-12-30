@@ -6,8 +6,8 @@ import axios from 'axios';
 import {hostname} from '../../links';
 import NoRowsOverlay from './NoRowsOverlay';
 
-const deleteTeacher = (teacherid) => (event) => {
-    axios.delete(hostname + '/auth/admin/teacher/' + teacherid, {
+const deleteSection = (usn) => (event) => {
+    axios.delete(hostname + '/auth/admin/timetable/' + usn, {
         headers: {
             "x-auth-token": localStorage.getItem('admintoken')
         }
@@ -21,45 +21,49 @@ const deleteTeacher = (teacherid) => (event) => {
     })
 }
 
-const teacherColumns = [
+const sectionColumns = [
     {
         field: '',
         headerName: 'Operations',
         width: 200,
         renderCell: (params) => (
             <>
-                <IconButton onClick={deleteTeacher(params.getValue('teacherid'))}>
+                <IconButton onClick={deleteSection(params.getValue('sectionid'))}>
                     <Delete/>
                 </IconButton>
             </>
         )
     },
-    { field: 'id', headerName: 'S.No.', width: 100 },
-    { field: 'teacherid', headerName: 'Teacher ID', width: 120,},
-    { field: 'tname', headerName: 'Name', flex: 1,},
-    { field: 'emailid', headerName: 'Email ID', flex: 1,},
+    { field: 'id', headerName: 'S.No.', flex: 1 },
+    { field: 'sectionid', headerName: 'Section', flex: 1,},
+    { field: 'yearno', headerName: 'Year', flex: 1,},
+    { field: 'semester', headerName: 'Semester', flex: 1,},
 ]
 
-export default function Teachers(props) {
-    const [teachers, setTeachers] = React.useState([]);
+const handleRowClick = (params) => {
+    window.location.href = window.location.origin + '/#/section/' + params.getValue('sectionid')
+}
+
+export default function Sections(props) {
+    const [sections, setSections] = React.useState([]);
     const {deptid} = props;
 
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
-        axios.get(hostname + '/teacher/dept/' + deptid)
+        axios.get(hostname + '/section/dept/' + deptid)
         .then(res => {
-            res.data.teachers.forEach((ele, index) => {
+            res.data.sections.forEach((ele, index) => {
                 ele.id = index + 1;
             })
-            setTeachers(res.data.teachers)
+            setSections(res.data.sections)
             setLoading(false)
-            console.log(res.data)
         })
         .catch(err => {
             console.error(err)
         })
     },[deptid])
+
     return(
         <div style={{minHeight: '20px'}}>
             <DataGrid 
@@ -69,8 +73,9 @@ export default function Teachers(props) {
                 components={{
                     noRowsOverlay: NoRowsOverlay,
                 }}
-                rows={teachers} 
-                columns={teacherColumns} 
+                rows={sections} 
+                columns={sectionColumns} 
+                onRowClick={handleRowClick}
                 pageSize={12} 
                 disableSelectionOnClick/>
         </div>

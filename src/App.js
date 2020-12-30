@@ -47,8 +47,8 @@ function App() {
           <AppBarWidget/>
           <UserPage/>
         </Route>
-        <Route path='/class/:cid' component={ClassPage}/>
-        <Route path='/calendar'>
+        <Route path='/classroom/:classid' component={ClassPage}/>
+        <Route path='/section/:sectionid'>
           <CalendarPage/>
         </Route>
       </ThemeProvider>

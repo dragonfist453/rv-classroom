@@ -27,16 +27,19 @@ export default function ClassCard(props) {
     return(
         <Card variant="outlined" className={classes.root} onDoubleClick={() => history.push('/class/'+props.class.cid)}>
             <CardContent>
-                <Link to={'/class/'+props.class.cid} className={classes.link}>
+                <Link to={'/classroom/'+props.class.classid} className={classes.link}>
                     <Typography variant='h5' noWrap>
-                        {props.class.name}
+                        {props.class.classid}
+                    </Typography>
+                    <Typography variant='h5' noWrap>
+                        {props.class.classname}
                     </Typography>
                 </Link>
-                <Typography variant='p'>
+                <Typography variant='inherit'>
                     {props.class.section}
                 </Typography>
                 <br/>
-                <Typography variant='p'>
+                <Typography variant='inherit'>
                     {props.class.teacher}
                 </Typography>
             </CardContent>

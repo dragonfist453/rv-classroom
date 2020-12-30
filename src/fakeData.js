@@ -1,41 +1,3 @@
-export const students = [
-    {
-        usn: '1RV18CS019',
-        stname: 'Ambu Karthik',
-        emailid: 'ambukarthik.cs18@rvce.edu.in',
-        yearno: 3,
-        semester: 5,
-        studentpass: '123karthik',
-        deptid: 1,
-        sectionid: 'A'
-    },
-    {
-        usn: '1RV18CS007',
-        stname: 'Achinthya S',
-        emailid: 'achinthyas.cs18@rvce.edu.in',
-        yearno: 3,
-        semester: 5,
-        studentpass: 'achi@123',
-        deptid: 1,
-        sectionid: 'A'
-    },
-]
-
-export const teachers = [
-    {
-        teacherid: 34,
-        tname: 'Shobha G',
-        emailid: 'shobhag@rvce.edu.in',
-        pass: 'shobha123',
-    },
-    {
-        teacherid: 61,
-        tname: 'Poonam G',
-        emailid: 'poonamg@rvce.edu.in',
-        pass: 'poonam123',
-    }
-]
-
 export const classrooms = [
     {
         cid: 1,
@@ -70,5 +32,13 @@ export const classrooms = [
         cid: 6,
         name: 'Intellectual Property Rights and Entrepreneurship',
         teacher: 'Chitra BT',
+    }
+]
+
+export const sections = [
+    {
+        sectionid: '1A',
+        yearno: 3,
+        semester: 6,
     }
 ]
