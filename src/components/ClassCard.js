@@ -25,7 +25,7 @@ export default function ClassCard(props) {
     const classes = useStyles();
     let history = useHistory();
     return(
-        <Card variant="outlined" className={classes.root} onDoubleClick={() => history.push('/class/'+props.class.cid)}>
+        <Card variant="outlined" className={classes.root} onDoubleClick={() => history.push('/classroom/'+props.class.classid)}>
             <CardContent>
                 <Link to={'/classroom/'+props.class.classid} className={classes.link}>
                     <Typography variant='h5' noWrap>

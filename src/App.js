@@ -8,6 +8,7 @@ import AdminLandingPage from './pages/AdminLandingPage';
 import ClassPage from './pages/ClassPage';
 import CalendarPage from './pages/CalendarPage';
 import ManagerPage from './pages/ManagerPage';
+import TeacherCalendarPage from './pages/TeacherCalendarPage';
 import AppBarWidget from './components/AppBarWidget';
 
 const theme = createMuiTheme({
@@ -50,6 +51,9 @@ function App() {
         <Route path='/classroom/:classid' component={ClassPage}/>
         <Route path='/section/:sectionid'>
           <CalendarPage/>
+        </Route>
+        <Route path='/teacher/:teacherid'>
+          <TeacherCalendarPage/>
         </Route>
       </ThemeProvider>
     </React.Fragment>

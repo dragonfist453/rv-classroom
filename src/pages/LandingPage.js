@@ -97,7 +97,15 @@ export default function LandingPage() {
                     localStorage.setItem('isAuthenticated', true)
                     localStorage.setItem('usertype', values.user)
                     localStorage.setItem('emailid', values.emailid)
-                    window.location.replace(window.location.origin + '/#/user')
+
+                    axios.get(hostname + '/' + values.user + '/email/' + values.emailid)
+                    .then(res => {
+                        localStorage.setItem('userDetails', JSON.stringify(res.data[values.user]))
+                        window.location.replace(window.location.origin + '/#/user')
+                    })
+                    .catch(err => {
+                        console.error(err)
+                    })
                 }
                 else {
                     setValues({...values, authFail: true})

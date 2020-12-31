@@ -5,9 +5,11 @@ import {Delete} from '@material-ui/icons';
 import axios from 'axios';
 import {hostname} from '../../links';
 import NoRowsOverlay from './NoRowsOverlay';
+import {Route} from 'react-router-dom';
+import AssignSubjects from './AssignSubjects';
 
-const deleteSubject = (usn) => (event) => {
-    axios.delete(hostname + '/auth/admin/classroom/' + usn, {
+const deleteSubject = (classid) => (event) => {
+    axios.delete(hostname + '/auth/admin/classroom/' + classid, {
         headers: {
             "x-auth-token": localStorage.getItem('admintoken')
         }
@@ -40,13 +42,14 @@ const subjectColumns = [
 ]
 
 const handleRowClick = (params) => {
-    window.location.href = window.location.origin + '/#/classroom/' + params.getValue('classid')
+    window.location.href = window.location.origin + '/#/admin/manage/subject/' + params.getValue('classid')
 }
 
 export default function Subjects(props) {
     const [subjects, setSubjects] = React.useState([]);
 
     const [loading, setLoading] = React.useState(true);
+    const {deptid} = props;
 
     React.useEffect(() => {
         axios.get(hostname + '/classroom/')
@@ -64,18 +67,23 @@ export default function Subjects(props) {
 
     return(
         <div style={{minHeight: '20px'}}>
-            <DataGrid 
-                loading={loading} 
-                autoHeight 
-                autoPageSize 
-                components={{
-                    noRowsOverlay: NoRowsOverlay,
-                }}
-                rows={subjects} 
-                columns={subjectColumns} 
-                onRowClick={handleRowClick}
-                pageSize={12} 
-                disableSelectionOnClick/>
+            <Route exact path='/admin/manage'>
+                <DataGrid 
+                    loading={loading} 
+                    autoHeight 
+                    autoPageSize 
+                    components={{
+                        noRowsOverlay: NoRowsOverlay,
+                    }}
+                    rows={subjects} 
+                    columns={subjectColumns} 
+                    onRowClick={handleRowClick}
+                    pageSize={12} 
+                    disableSelectionOnClick/>
+            </Route>
+            <Route path='/admin/manage/subject/:classid'>
+                <AssignSubjects deptid={deptid}/>
+            </Route>
         </div>
     )
 }

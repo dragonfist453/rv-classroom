@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import axios from 'axios';
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import {hostname} from '../links';
+import { hostname } from "../links";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -20,7 +20,7 @@ export default class EventsCalendar extends React.Component {
       },
       toolbar: props.toolbar,
       defaultView: props.defaultView,
-      events: []
+      events: [],
     };
   }
 
@@ -31,11 +31,17 @@ export default class EventsCalendar extends React.Component {
 
   getEvents = () => {
       // Code that gets events from backend
-      axios.get(hostname + '/api/event')
+      axios.get(this.props.eventsurl)
         .then(res => {
           let events = [];
-          res.data.events.forEach(({ename: title, eventstart: start, eventend: end, eid}) => {
-            events.push({title, start, end, allDay: false, resource: false, eid})
+          res.data.events.forEach(({description: title, fromtime, totime, ondate, eventid: eid, link}) => {
+            const date = new Date(ondate)
+            date.setDate(date.getDate() + 1)
+            const start = new Date(date.toISOString().split('T')[0] + 'T' + fromtime)
+            start.setMinutes(start.getMinutes() - start.getTimezoneOffset())
+            const end = new Date(date.toISOString().split('T')[0] + 'T' + totime)
+            end.setMinutes(end.getMinutes() - end.getTimezoneOffset())
+            events.push({title, start, end, allDay: false, resource: false, eid, link})
           })
           this.setState({events: events})
         })
@@ -57,9 +63,39 @@ export default class EventsCalendar extends React.Component {
     maxHeight: "100%",
   }
 
+  handleSelect = ({ start, end }) => {
+    const description = window.prompt('New event name')
+    const count = window.prompt('How many times should the event repeat weekly/daily')
+    const classid = window.prompt('Enter subject code of class')
+    if (description && count && classid) {
+      const body = {
+        sectionid: this.props.sectionid,
+        classid: classid,
+        summary: description,
+        start: start.toISOString(),
+        end: end.toISOString(),
+        freq: this.state.defaultView==='week'?'WEEKLY':'DAILY',
+        count: count
+      }
+      console.log(body)
+      axios.post(hostname + '/auth/admin/event/', body, {
+        headers: {
+          'x-auth-token': localStorage.getItem('admintoken')
+        }
+      })
+      .then(res => {
+        console.log(res.data)
+        window.location.reload()
+      })
+      .catch(err => {
+        console.error(err)
+      })
+    }
+  }
+
   render() {
     return (
-      <div style={{padding: 80}}>
+      <div style={{padding: this.props.padding}}>
         <div
           style={this.props.defaultView !== "agenda"?{
             height: this.state.height * (this.state.proportions.height / 100),
@@ -81,16 +117,25 @@ export default class EventsCalendar extends React.Component {
           }>
             <Calendar
               popup
-              views={['week','day']}
+              selectable={this.props.selectable}
+              views={this.state.defaultView === 'agenda'?['agenda']:['week','day']}
               localizer={localizer}
               events={this.state.events}
-              defaultView={this.props.defaultView}
+              defaultView={this.state.defaultView}
+              onView={(view) => this.setState({...this.state, defaultView: view})}
               startAccessor="start"
               endAccessor="end"
               onDoubleClickEvent={(event) => {
-                window.location.href = window.location.origin + '/#/events/' + event.eid;
+                window.open(event.link, '_blank');
               }}
+              // onSelectEvent={(event) => {
+              //   if(localStorage.getItem('usertype')==='student')
+              //     this.props.feedbackForm(event.eventid)
+              //   else
+              //     this.props.feedbackOutput(event.eventid)
+              // }}
               toolbar={this.props.toolbar}
+              onSelectSlot={this.handleSelect}
             />
           </div>
       </div>

@@ -5,9 +5,11 @@ import {Delete} from '@material-ui/icons';
 import axios from 'axios';
 import {hostname} from '../../links';
 import NoRowsOverlay from './NoRowsOverlay';
+import { Route } from 'react-router-dom';
+import AddEvents from './Events';
 
-const deleteSection = (usn) => (event) => {
-    axios.delete(hostname + '/auth/admin/timetable/' + usn, {
+const deleteSection = (sectionid) => (event) => {
+    axios.delete(hostname + '/auth/admin/timetable/' + sectionid, {
         headers: {
             "x-auth-token": localStorage.getItem('admintoken')
         }
@@ -41,7 +43,7 @@ const sectionColumns = [
 ]
 
 const handleRowClick = (params) => {
-    window.location.href = window.location.origin + '/#/section/' + params.getValue('sectionid')
+    window.location.href = window.location.origin + '/#/admin/manage/timetable/' + params.getValue('sectionid')
 }
 
 export default function Sections(props) {
@@ -65,19 +67,26 @@ export default function Sections(props) {
     },[deptid])
 
     return(
-        <div style={{minHeight: '20px'}}>
-            <DataGrid 
-                loading={loading} 
-                autoHeight 
-                autoPageSize 
-                components={{
-                    noRowsOverlay: NoRowsOverlay,
-                }}
-                rows={sections} 
-                columns={sectionColumns} 
-                onRowClick={handleRowClick}
-                pageSize={12} 
-                disableSelectionOnClick/>
-        </div>
+        <>
+            <Route exact path='/admin/manage'>
+                <div style={{minHeight: '20px'}}>
+                    <DataGrid 
+                        loading={loading} 
+                        autoHeight 
+                        autoPageSize 
+                        components={{
+                            noRowsOverlay: NoRowsOverlay,
+                        }}
+                        rows={sections} 
+                        columns={sectionColumns} 
+                        onRowClick={handleRowClick}
+                        pageSize={12} 
+                        disableSelectionOnClick/>
+                </div>
+            </Route>
+            <Route path='/admin/manage/timetable/:sectionid'>
+                <AddEvents />
+            </Route>
+        </>
     )
 }

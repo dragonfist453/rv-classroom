@@ -42,6 +42,7 @@ export default function AppBarWidget(props) {
     const classes = useStyles();
     let loggedIn = localStorage.getItem('isAuthenticated') === 'true';
     let userType = localStorage.getItem('usertype')
+    let userDetails = JSON.parse(localStorage.getItem('userDetails'))
     let emailid = localStorage.getItem('emailid')
 
     const [passwordDetails, setPasswordDetails] = React.useState({
@@ -71,6 +72,7 @@ export default function AppBarWidget(props) {
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('atoken');
         localStorage.removeItem('emailid')
+        localStorage.removeItem('usertype')
         localStorage.removeItem('userDetails')
         window.location.replace(window.location.origin + '/#/');
     }
@@ -126,7 +128,7 @@ export default function AppBarWidget(props) {
                             >
                                 <AccountCircle />
                             </IconButton>
-                            <Link to='/calendar' className={classes.icon}>
+                            <Link to={(userType === 'student')?('/section/' + userDetails.sectionid):('/teacher/' + userDetails.teacherid)} className={classes.icon}>
                                 <IconButton>
                                     <Event/>
                                 </IconButton>

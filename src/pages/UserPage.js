@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
 export default function UserPage() {
     const classes = useStyles();
     const loggedIn = localStorage.getItem('isAuthenticated') === 'true';
+    const usertype = localStorage.getItem('usertype');
 
     React.useEffect(() => {
         if(!loggedIn) {
@@ -24,33 +25,27 @@ export default function UserPage() {
 
     const [classrooms, setClassrooms] = React.useState([])
 
-    React.useEffect(() => {
-        axios.get(hostname + '/' + localStorage.getItem('usertype') + '/email/' + localStorage.getItem('emailid'))
-        .then(res => {
-            localStorage.setItem('userDetails', JSON.stringify(res.data[localStorage.getItem('usertype')]))
-        })
-        .catch(err => {
-            console.error(err)
-        })
-    },[])
+    const getClassroomLink = hostname + '/' + usertype + '/subjects/' + (JSON.parse(localStorage.getItem('userDetails')).usn || JSON.parse(localStorage.getItem('userDetails')).teacherid)
 
     React.useEffect(() => {
-        axios.get(hostname + '/' + localStorage.getItem('usertype') + '/subjects/' + JSON.parse(localStorage.getItem('userDetails')).usn)
+        axios.get(getClassroomLink)
         .then(res => {
             setClassrooms(res.data.results)
         }) 
-    })
+    },[usertype, getClassroomLink])
     return(
         <Container maxWidth='xl' className={classes.root}>
             {
                 classrooms.length !==0?(
                     <Grid container spacing={2}>
                         {
-                            classrooms.map(classroom => (
-                                <Grid key={classroom.name} item xs={12} sm={6} md={4} lg={3}>
-                                    <ClassCard class={classroom}/>
-                                </Grid>
-                            ))
+                            classrooms.map(classroom => {
+                                return(
+                                    <Grid key={classroom.classid} item xs={12} sm={6} md={4} lg={3}>
+                                        <ClassCard class={classroom}/>
+                                    </Grid>
+                                )
+                            })
                         }
                     </Grid>
                 )
