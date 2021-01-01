@@ -277,7 +277,7 @@ export default function ManagerPage(props) {
                         <AppBar position="static" color="default" style={{flexGrow: 1,}}>
                             <Toolbar>
                                 <div className={classes.leftStuff}>
-                                    <Link to='/' style={{display: 'contents', textDecoration: 'none', color: 'black'}}>
+                                    <Link to='/admin/' style={{display: 'contents', textDecoration: 'none', color: 'black'}}>
                                         <div style={{display: 'contents'}}>
                                             <img src={process.env.PUBLIC_URL + '/rvce.png'} alt='RVCE logo' height="50px"/>
                                             <Typography variant="h6"> Classroom</Typography>

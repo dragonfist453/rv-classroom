@@ -122,17 +122,19 @@ export default function AppBarWidget(props) {
                             </Link>
                         </div>
                         <div className={classes.icons}>
-                            <IconButton
-                                onClick={handleMenu}
-                                className={classes.icon}
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                            <Link to={(userType === 'student')?('/section/' + userDetails.sectionid):('/teacher/' + userDetails.teacherid)} className={classes.icon}>
-                                <IconButton>
-                                    <Event/>
+                            <div className={classes.icon}>
+                                <Typography variant="inherit">{'Welcome, ' + userDetails.stname || userDetails.tname}</Typography>
+                                <Link to={(userType === 'student')?('/section/' + userDetails.sectionid):('/teacher/' + userDetails.teacherid)}>
+                                    <IconButton>
+                                        <Event/>
+                                    </IconButton>
+                                </Link>
+                                <IconButton
+                                    onClick={handleMenu}
+                                >
+                                    <AccountCircle />
                                 </IconButton>
-                            </Link>
+                            </div>
                             <Menu
                                 anchorEl={anchorEl}
                                 anchorOrigin={{
