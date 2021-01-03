@@ -123,7 +123,7 @@ export default function AppBarWidget(props) {
                         </div>
                         <div className={classes.icons}>
                             <div className={classes.icon}>
-                                <Typography variant="inherit">{'Welcome, ' + userDetails.stname || userDetails.tname}</Typography>
+                                <Typography variant="inherit">{'Welcome, ' + (userDetails.stname || userDetails.tname)}</Typography>
                                 <Link to={(userType === 'student')?('/section/' + userDetails.sectionid):('/teacher/' + userDetails.teacherid)}>
                                     <IconButton>
                                         <Event/>

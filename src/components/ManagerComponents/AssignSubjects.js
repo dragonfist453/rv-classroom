@@ -5,8 +5,9 @@ import {Add} from '@material-ui/icons';
 import axios from 'axios';
 import {hostname} from '../../links';
 import NoRowsOverlay from './NoRowsOverlay';
+import {useParams} from 'react-router-dom';
 
-const classid = window.location.href.slice(-6)
+let classid = ''
 
 const assignTeacher = (teacherid) => (event) => {
     axios.post(hostname + '/auth/admin/teaches/', {
@@ -94,8 +95,11 @@ export default function Students(props) {
     const [loadingStudent, setLoadingStudent] = React.useState(true);
     const [loadingTeacher, setLoadingTeacher] = React.useState(true);
 
+    const classID = useParams().classid;
+    classid = classID;
+
     React.useEffect(() => {
-        axios.get(hostname + '/student/notassigned/' + classid)
+        axios.get(hostname + '/student/notassigned/' + classID)
         .then(res => {
             res.data.students.forEach((ele, index) => {
                 ele.id = index + 1;
@@ -106,10 +110,10 @@ export default function Students(props) {
         .catch(err => {
             console.error(err)
         })
-    },[])
+    },[classID])
 
     React.useEffect(() => {
-        axios.get(hostname + '/teacher/notassigned/' + classid)
+        axios.get(hostname + '/teacher/notassigned/' + classID)
         .then(res => {
             res.data.teachers.forEach((ele, index) => {
                 ele.id = index + 1;
@@ -120,7 +124,7 @@ export default function Students(props) {
         .catch(err => {
             console.error(err)
         })
-    },[])
+    },[classID])
     return(
         <>
             <Button onClick={() => window.location.href = window.location.origin + '/#/admin/manage/'}>Back</Button>
