@@ -187,6 +187,20 @@ export default function ClassPage(props) {
             console.error(err)
         })
     }
+    const deleteAnnouncement = aid => event => {
+        axios.delete(hostname + '/announcement/' + aid, {
+            headers: {
+                'x-auth-token': localStorage.getItem('atoken')
+            }
+        })
+        .then(res => {
+            console.log(res.data)
+            window.location.reload()
+        })
+        .catch(err => {
+            console.error(err)
+        })
+    }
     return(
         <>
             <AppBarWidget/>
@@ -261,9 +275,14 @@ export default function ClassPage(props) {
                                         {
                                             announcements.map(announcement => (
                                                 <Paper variant='outlined' className={classes.paper}>
-                                                    <Typography variant='inherit'>
+                                                    <Typography variant='inherit' style={{flexGrow: 1}}>
                                                         {announcement.announcement}
                                                     </Typography>
+                                                    {isTeacher && (
+                                                        <IconButton style={{float: 'right'}} onClick={deleteAnnouncement(announcement.aid)}>
+                                                            <Delete/>
+                                                        </IconButton>
+                                                    )}
                                                 </Paper>
                                             ))
                                         }
@@ -321,6 +340,7 @@ export default function ClassPage(props) {
                                                         id="announcement"
                                                         label="Announcement"
                                                         type="text"
+                                                        multiline
                                                         placeholder="Enter announcement"
                                                         value={announcementValues.announcement}
                                                         onChange={handleAnnouncementChange('announcement')}
