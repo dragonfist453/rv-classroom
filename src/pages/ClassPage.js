@@ -50,6 +50,7 @@ export default function ClassPage(props) {
     
     const [classroom, setClassroom] = React.useState({})
     const [materials, setMaterials] = React.useState([])
+    const [feedbacks, setFeedbacks] = React.useState([])
     const [announcements, setAnnouncements] = React.useState([])
     const [loaded, setLoaded] = React.useState(false)
     React.useEffect(() => {
@@ -76,6 +77,15 @@ export default function ClassPage(props) {
             axios.get(hostname + '/announcement/class/' + classid)
             .then(res => {
                 setAnnouncements(res.data.results)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+
+            axios.get(hostname + '/feedback/' + classid)
+            .then(res => {
+                setFeedbacks(res.data.results)
+                console.log(res.data.results)
             })
             .catch(err => {
                 console.error(err)
@@ -146,6 +156,19 @@ export default function ClassPage(props) {
         })
     }
 
+    const [feedbackValues, setFeedbackValues] = React.useState({
+        classid: classid,
+        feedback: '',
+        ts: new Date().toISOString().slice(0, 19).replace('T', ' '),
+    })
+
+    const handleFeedbackChange = (prop) => (event) => {
+        setFeedbackValues({
+            ...feedbackValues,
+            [prop]: event.target.value
+        })
+    }
+
     const addMaterial = (event) => {
         event.preventDefault()
         axios.post(hostname + '/material/', materialValues, {
@@ -168,6 +191,14 @@ export default function ClassPage(props) {
                 'x-auth-token': localStorage.getItem('atoken')
             }
         })
+        .then(res => {
+            console.log(res.data)
+            window.location.reload()
+        })
+    }
+    const addFeedback = (event) => {
+        event.preventDefault()
+        axios.post(hostname + '/feedback/', feedbackValues)
         .then(res => {
             console.log(res.data)
             window.location.reload()
@@ -235,6 +266,7 @@ export default function ClassPage(props) {
                             <Tabs value={value} onChange={handleChange} variant='fullWidth' textColor='primary' indicatorColor='primary'>
                                 <Tab label="Materials"/>
                                 <Tab label="Announcements"/>
+                                <Tab label="Feedback"/>
                             </Tabs>
                         </AppBar>
                         {
@@ -294,19 +326,61 @@ export default function ClassPage(props) {
                                             Nothing to display here
                                         </Typography>
                                     </Paper>
-                                )
+                                ),
+                                (isTeacher ? (
+                                    (Array.isArray(feedbacks) && feedbacks.length!==0)?(
+                                        <>
+                                            {
+                                                feedbacks.map(feedback => (
+                                                    <Paper variant='outlined' className={classes.paper}>
+                                                        <Typography variant='inherit' style={{flexGrow: 1}}>
+                                                            {feedback.fback}
+                                                        </Typography>
+                                                        {isTeacher && (
+                                                            <div style={{float: 'right'}}>
+                                                                {Date(feedback.ts)}
+                                                            </div>
+                                                        )}
+                                                    </Paper>
+                                                ))
+                                            }
+                                        </>
+                                    ):
+                                    (
+                                        <Paper variant="outlined" className={classes.paper} style={{textAlign: 'center'}}>
+                                            <Typography variant='h5'>
+                                                Nothing to display here
+                                            </Typography>
+                                        </Paper>
+                                    )
+                                ):
+                                (
+                                    <Paper variant="outlined" className={classes.paper} style={{textAlign: 'center'}}>
+                                        <Typography variant='h5'>
+                                            Nothing to display here
+                                        </Typography>
+                                    </Paper>
+                                ))
                             ][value]
                         }
                         {
-                            isTeacher && (<Tooltip title={['Add Material', 'Add Announcement'][value]}>
+                            (isTeacher)? (<Tooltip title={['Add Material', 'Add Announcement'][value]}>
                                 <Fab aria-label={['Add Material', 'Add Announcement'][value]} onClick={handleOpenDialog} className={classes.fab} color='primary'>
                                     <Add/>
                                 </Fab>
                             </Tooltip>)
+                            :
+                            (
+                                <Tooltip title={'Add Feedback'}>
+                                    <Fab aria-label={'Add Feedback'} onClick={handleOpenDialog} className={classes.fab} color='primary'>
+                                        <Add/>
+                                    </Fab>
+                                </Tooltip>
+                            )
                         }
                         <Dialog open={openDialog} onClose={handleCloseDialog}>
-                            <DialogTitle>{['Add Material', 'Add Announcement'][value]}</DialogTitle>
-                            <form onSubmit={[addMaterial, addAnnouncement][value]}>
+                            <DialogTitle>{['Add Material', 'Add Announcement', 'Add Feedback'][value]}</DialogTitle>
+                            <form onSubmit={[addMaterial, addAnnouncement, addFeedback][value]}>
                                 <DialogContent>
                                     {
                                         [
@@ -344,6 +418,21 @@ export default function ClassPage(props) {
                                                         placeholder="Enter announcement"
                                                         value={announcementValues.announcement}
                                                         onChange={handleAnnouncementChange('announcement')}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ),
+                                            (
+                                                <div>
+                                                    <div className={classes.fields}>
+                                                        <TextField
+                                                        id="fback"
+                                                        label="Feedback"
+                                                        type="text"
+                                                        placeholder="Enter feedback"
+                                                        value={feedbackValues.fback}
+                                                        multiline
+                                                        onChange={handleFeedbackChange('fback')}
                                                         />
                                                     </div>
                                                 </div>
